@@ -27,18 +27,22 @@ public class Conversation
 
   /**
    * Constructs a new Converation using the default local aliases.
+   *
    * @see Conversation.DEFAULT_LOCAL_ALIAS
    * @see Conversation.DEFAULT_REMOTE_ALIAS
    */
-  public Conversation()
+  public Conversation ()
   {
-    this ( Conversation.DEFAULT_LOCAL_ALIAS, Conversation.DEFAULT_REMOTE_ALIAS );
+    this( Conversation.DEFAULT_LOCAL_ALIAS, Conversation.DEFAULT_REMOTE_ALIAS );
   }
 
   /**
    * Constrcuts a new Converation using the fiven aliases.
-   * @param localAlias alias for local messages
-   * @param remoteAlias alias for remote messages
+   *
+   * @param localAlias
+   *         alias for local messages
+   * @param remoteAlias
+   *         alias for remote messages
    */
   public Conversation ( String localAlias, String remoteAlias )
   {
@@ -49,11 +53,48 @@ public class Conversation
   }
 
   /**
+   * Adds a new message to this Conversation using the local alias.
+   *
+   * @param message
+   *         message to add
+   */
+  public void addMessageFromLocal ( String message )
+  {
+    this.conversationHistory.add( new ConversationEntry( this.localAlias, message, new Date() ) );
+  }
+
+  /**
+   * Adds a new message to this Conversation using the remote alias.
+   *
+   * @param message
+   *         message to add
+   */
+  public void addMessageFromRemote ( String message )
+  {
+    this.conversationHistory.add( new ConversationEntry( this.remoteAlias, message, new Date() ) );
+  }
+
+  //</editor-fold>
+
+  //<editor-fold desc="Methods">
+
+  /**
    * @return the used local alias
    */
   public String getLocalAlias ()
   {
     return localAlias;
+  }
+
+  /**
+   * @return an unmodifiable List containing all ConversationEntries
+   *
+   * @see ConversationEntry
+   * @see java.util.Collections.UnmodifiableList
+   */
+  public List<ConversationEntry> getReadOnlyConverationHistory ()
+  {
+    return Collections.unmodifiableList( this.conversationHistory );
   }
 
   /**
@@ -66,43 +107,11 @@ public class Conversation
 
   //</editor-fold>
 
-  //<editor-fold desc="Methods">
-
-  /**
-   * Adds a new message to this Conversation using the local alias.
-   * @param message message to add
-   */
-  public void addMessageFromLocal ( String message )
-  {
-    this.conversationHistory.add ( new ConversationEntry( this.localAlias, message, new Date() ));
-  }
-
-  /**
-   * Adds a new message to this Conversation using the remote alias.
-   * @param message message to add
-   */
-  public void addMessageFromRemote ( String message )
-  {
-    this.conversationHistory.add( new ConversationEntry( this.remoteAlias, message, new Date() ) );
-  }
-
-  /**
-   * @return an unmodifiable List containing all ConversationEntries
-   * @see ConversationEntry
-   * @see java.util.Collections.UnmodifiableList
-   */
-  public List<ConversationEntry> getReadOnlyConverationHistory ()
-  {
-    return Collections.unmodifiableList( this.conversationHistory );
-  }
-
-  //</editor-fold>
-
   public static class ConversationEntry
   {
     public final String Alias;
-    public final String Message;
     public final Date Date;
+    public final String Message;
 
     public ConversationEntry ( String alias, String message, Date date )
     {

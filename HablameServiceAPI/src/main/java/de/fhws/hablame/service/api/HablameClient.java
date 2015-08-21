@@ -6,17 +6,14 @@ import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
-import org.apache.http.HttpStatus;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- *
  * @author Kristoffer Schneider kschneider@codingfalx.de
  * @created 13.08.2015
  */
@@ -25,60 +22,69 @@ public class HablameClient
 {
   // <editor-fold desc="Static">
 
-  private static Logger logger;
-
   static
   {
     HablameClient.logger = Logger.getLogger( "HablameClientLogger" );
     HablameClient.logger.setLevel( Level.CONFIG );
   }
 
+  public static final String DEFAULT_BASE_ADDRESS = "http://194.95.221.229:8080/Hablame-BotBackend";
+  private static Logger logger;
+
   //</editor-fold>
 
   //<editor-fold desc="Fields">
-
   private String baseAddress;
 
   //</editor-fold>
 
-  //<editor-fold desc="Constructor">
+  //<editor-fold desc="Constructor/finalize">
 
   /**
-   *
-   * @param baseAddress the base service-address used by this serviceClient
+   * @param baseAddress
+   *         the base service-address used by this serviceClient
    */
   public HablameClient ( String baseAddress )
   {
     this.baseAddress = baseAddress;
   }
 
+  public HablameClient()
+  {
+    this( HablameClient.DEFAULT_BASE_ADDRESS );
+  }
+
+  @Override
+  public void finalize () throws Throwable
+  {
+    super.finalize();
+    try
+    {
+      Unirest.shutdown();
+    }
+    catch ( IOException exc )
+    {
+      HablameClient.logger.log( Level.SEVERE, "thrown while being within finalize", exc );
+      throw exc;
+    }
+
+  }
+
   //</editor-fold>
 
   //<editor-fold desc="Methods">
 
-  private GetRequest createReplyForMessageRequest ( String message )
-  {
-    final String PARAM_NAME = "message";
-
-    GetRequest request = Unirest.get( this.baseAddress + IHablameClient.START_CONVERSATION_RESOURCE );
-    request.queryString( PARAM_NAME, message );
-
-    return request;
-  }
-
-  @Override
-  public final Future<HttpResponse<String>> getReplyForMessageAsync ( String message )
-  {
-    return this.createReplyForMessageRequest( message ).asStringAsync();
-  }
-
   @Override
   public final void getReplyForMessageAsync ( String message, final BiConsumer<Integer, String> callback )
   {
-    final String BODY_PARAM_NAME = "message";
+    HttpRequestWithBody request = this.createReplyForMessageRequest( message );
+    request.asStringAsync( new Callback<String>()
+    {
+      public void cancelled ()
+      {
+        callback.accept( -1, null );
+      }
 
-    GetRequest request = this.createReplyForMessageRequest( message );
-    request.asStringAsync( new Callback<String>() {
       public void completed ( HttpResponse<String> httpResponse )
       {
         callback.accept( httpResponse.getStatus(), httpResponse.getBody() );
@@ -88,12 +94,58 @@ public class HablameClient
       {
         callback.accept( -1, null );
       }
+    } );
+  }
 
+  @Override
+  public final Future<HttpResponse<String>> getReplyForMessageAsync ( String message )
+  {
+    return this.createReplyForMessageRequest( message ).asStringAsync();
+  }
+
+  @Override
+  public final Future<HttpResponse<String>> stopConversationAndBot ()
+  {
+    return this.createStopMessageAndConversationRequest().asStringAsync();
+  }
+
+  @Override
+  public final void stopConversationAndBot ( BiConsumer<Integer, String> callback )
+  {
+    GetRequest request = this.createStopMessageAndConversationRequest();
+    request.asStringAsync( new Callback<String>() {
+      @Override
+      public void completed ( HttpResponse<String> httpResponse )
+      {
+        callback.accept( httpResponse.getStatus(), httpResponse.getBody() );
+      }
+
+      @Override
+      public void failed ( UnirestException e )
+      {
+        callback.accept( -1, null );
+      }
+
+      @Override
       public void cancelled ()
       {
         callback.accept( -1, null );
       }
-    });
+    } );
+  }
+
+  private HttpRequestWithBody createReplyForMessageRequest ( String message )
+  {
+    HttpRequestWithBody request = Unirest.post( this.baseAddress + IHablameClient.CONVERSATION_RESOURCE );
+    request.body( message );
+
+    return request;
+  }
+
+  private GetRequest createStopMessageAndConversationRequest ()
+  {
+    GetRequest request = Unirest.get( this.baseAddress + IHablameClient.BOT_SHUTDOWN_RESOURCE );
+    return request;
   }
 
   //</editor-fold>
