@@ -49,6 +49,9 @@ public class HablameClient
     this.baseAddress = baseAddress;
   }
 
+  /**
+   * uses the default base address
+   */
   public HablameClient()
   {
     this( HablameClient.DEFAULT_BASE_ADDRESS );

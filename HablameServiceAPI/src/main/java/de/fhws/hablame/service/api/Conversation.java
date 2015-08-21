@@ -28,8 +28,8 @@ public class Conversation
   /**
    * Constructs a new Converation using the default local aliases.
    *
-   * @see Conversation.DEFAULT_LOCAL_ALIAS
-   * @see Conversation.DEFAULT_REMOTE_ALIAS
+   * @see #DEFAULT_LOCAL_ALIAS
+   * @see #DEFAULT_REMOTE_ALIAS
    */
   public Conversation ()
   {
