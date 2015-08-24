@@ -1,4 +1,4 @@
-# hablame-service-api
+# Hablame Service API
 ### What this repository is about
 Within this repo you can find a simple API to use when accessing the [Hablame-Botbackend service](https://github.com/TeamchatBot/Hablame-Botbackend).
 It simplifies the REST-usage of the service and conatains methods to every REST interface which is currently available.
