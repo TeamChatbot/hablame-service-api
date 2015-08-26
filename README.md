@@ -12,6 +12,9 @@ Sourcecode:
 Documentation:
  - [JavaDocs](https://github.com/TeamChatbot/hablame-service-api/tree/master/HablameServiceAPI/JavaDoc)
 
+### Used libraries
+A list of used dependencies can be found within the pom.xml
+
 ### Usage example
 ```java
 HablameClient client = new HablameClient();
