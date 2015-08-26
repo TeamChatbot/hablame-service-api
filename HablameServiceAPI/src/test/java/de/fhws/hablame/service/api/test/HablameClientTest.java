@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.util.concurrent.Future;
+import java.util.function.BiConsumer;
 
 /**
  * @author Kristoffer Schneider kschneider@codingfalx.de
@@ -40,19 +41,23 @@ public class HablameClientTest
 
   public void testGetReplyForMessageAsync1ByCallback () throws Exception
   {
-    Object obj = new Object();
+    final Object obj = new Object();
 
-    this.testClient.getReplyForMessageAsync( "Wie ist das Wetter in Wuerzburg", ( Integer status, String answer ) ->
-    {
-      assertNotNull( status );
-      assertEquals( (int) status, 200 );
-      assertNotNull( answer );
-      System.out.println( answer );
-      System.out.flush();
+    this.testClient.getReplyForMessageAsync( "Wie ist das Wetter in Wuerzburg", new BiConsumer<Integer, String>() {
 
-      synchronized ( obj )
+      @Override
+      public void accept ( Integer status, String answer )
       {
-        obj.notifyAll();
+        assertNotNull( status );
+        assertEquals( (int) status, 200 );
+        assertNotNull( answer );
+        System.out.println( answer );
+        System.out.flush();
+
+        synchronized ( obj )
+        {
+          obj.notifyAll();
+        }
       }
     } );
 
@@ -77,21 +82,24 @@ public class HablameClientTest
 
   public void testStopConversationAndBotCallback () throws Exception
   {
-    Object obj = new Object();
+    final Object obj = new Object();
 
-    this.testClient.stopConversationAndBot( ( Integer status, String answer ) ->
-    {
-      assertNotNull( status );
-      assertEquals( (int) status, 200 );
-      assertNotNull( answer );
-      System.out.println( answer );
-      System.out.flush();
-
-      synchronized ( obj )
+    this.testClient.stopConversationAndBot( new BiConsumer<Integer, String>( ) {
+      @Override
+      public void accept ( Integer status, String answer )
       {
-        obj.notifyAll();
+        assertNotNull( status );
+        assertEquals( (int) status, 200 );
+        assertNotNull( answer );
+        System.out.println( answer );
+        System.out.flush();
+
+        synchronized ( obj )
+        {
+          obj.notifyAll();
+        }
       }
-    } );
+    });
 
     synchronized ( obj )
     {

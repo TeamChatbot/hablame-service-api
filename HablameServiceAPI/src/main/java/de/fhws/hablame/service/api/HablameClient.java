@@ -113,7 +113,7 @@ public class HablameClient
   }
 
   @Override
-  public final void stopConversationAndBot ( BiConsumer<Integer, String> callback )
+  public final void stopConversationAndBot ( final BiConsumer<Integer, String> callback )
   {
     GetRequest request = this.createStopMessageAndConversationRequest();
     request.asStringAsync( new Callback<String>() {
