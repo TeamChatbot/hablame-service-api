@@ -1,13 +1,11 @@
 package de.fhws.hablame.service.api.test;
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.request.HttpRequestWithBody;
+import de.fhws.hablame.service.api.util.function.BiConsumer;
 import de.fhws.hablame.service.api.HablameClient;
 import junit.framework.TestCase;
-import org.junit.Test;
 
 import java.util.concurrent.Future;
-import java.util.function.BiConsumer;
 
 /**
  * @author Kristoffer Schneider kschneider@codingfalx.de

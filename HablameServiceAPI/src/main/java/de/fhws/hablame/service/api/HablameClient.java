@@ -6,10 +6,10 @@ import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
+import de.fhws.hablame.service.api.util.function.BiConsumer;
 
 import java.io.IOException;
 import java.util.concurrent.Future;
-import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

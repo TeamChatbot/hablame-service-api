@@ -1,9 +1,9 @@
 package de.fhws.hablame.service.api;
 
 import com.mashape.unirest.http.HttpResponse;
+import de.fhws.hablame.service.api.util.function.BiConsumer;
 
 import java.util.concurrent.Future;
-import java.util.function.BiConsumer;
 
 /**
  * This interface defines the contract, each client needs to full fill, if it
