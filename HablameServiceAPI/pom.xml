@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.fhws.hablame</groupId>
-    <artifactId>service.api</artifactId>
+    <artifactId>hablame.service.api</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
@@ -64,6 +64,43 @@
                         <showWarnings>true</showWarnings>
                         <fork>true</fork>
                 </configuration>
+            </plugin>
+
+            <!-- needed so the api is running on android -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>${project.artifactId}-${project.version}-withDependency-ShadedForAndroid</finalName>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.mashape.unirest:unirest-java</include>
+                                    <include>org.apache.httpcomponents:httpclient</include>
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <include>org.apache.httpcomponents:httpasyncclient</include>
+                                    <include>org.apache.httpcomponents:httpmime</include>
+                                    <include>org.json:json</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-codec:commons-codec</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>com.mashape.relocation</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- creating an jar-library containing all dependencies -->
