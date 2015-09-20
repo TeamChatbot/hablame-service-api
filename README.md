@@ -25,3 +25,8 @@ System.out.println( answer );
 ```
 
 More examples can be found in the unit tests
+
+### Version History
+name, date(dd/mm/yyyyy)
+ - [Pre-Release Hablame Service-API v0.1-beta.1](https://github.com/TeamChatbot/hablame-service-api/releases/tag/v0.1-beta.1)
+ - [Pre-Release Hablame Service-API v0.1-beta.1](https://github.com/TeamChatbot/hablame-service-api/releases/tag/v0.1-beta.2)
