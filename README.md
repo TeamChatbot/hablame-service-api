@@ -29,4 +29,5 @@ More examples can be found in the unit tests
 ### Version History
 name, date(dd/mm/yyyyy)
  - [Pre-Release Hablame Service-API v0.1-beta.1](https://github.com/TeamChatbot/hablame-service-api/releases/tag/v0.1-beta.1) (25/08/2015)
- - [Pre-Release Hablame Service-API v0.1-beta.1](https://github.com/TeamChatbot/hablame-service-api/releases/tag/v0.1-beta.2) (25/08/2015)
+ - [Pre-Release Hablame Service-API v0.1-beta.2](https://github.com/TeamChatbot/hablame-service-api/releases/tag/v0.1-beta.2) (25/08/2015)
+ - [Rekease Hablame Service-API Projectpaper Summer 2015](https://github.com/TeamChatbot/hablame-service-api/releases/tag/v1.0) (22/09/2015)
